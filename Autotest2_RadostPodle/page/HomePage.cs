@@ -47,5 +47,9 @@ namespace AutotestPage_RadostPodle
         [FindsBy(How = How.Name, Using = "s")]
         public IWebElement SearchBar { get; set; }
 
+        [FindsBy(How = How.Name, Using = "google_ads_frame1")]
+        public IWebElement BannerAdsFirst { get; set; }
+
+
     }
 }

@@ -22,7 +22,7 @@ namespace AutotestPage_RadostPodle
         [OneTimeSetUp]
         public void Initial()
         {
-            Driver = Actions.OpenPage(TestConfig.urlHomePage);
+            Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.Chrome);
             NHomePage = new HomePage(Driver);
             NOnasPage = new OnasPage(Driver);
         }
@@ -70,7 +70,7 @@ namespace AutotestPage_RadostPodle
         [OneTimeSetUp]
         public void Initial()
         {
-            Driver = Actions.OpenPage(TestConfig.urlHomePage);
+            Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.IE);
 
             NHomePage = new HomePage(Driver);
             
@@ -125,7 +125,7 @@ namespace AutotestPage_RadostPodle
         [OneTimeSetUp]
         public void SetUpLoad3()
         {
-            Driver = Actions.OpenPage(TestConfig.urlHomePage);
+            Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.Firefox);
             NHomePage = new HomePage(Driver);
         }
 
@@ -179,10 +179,49 @@ namespace AutotestPage_RadostPodle
             Driver.Quit();
         }
 
+        [TestFixture, Order(4)]
+        [Parallelizable]
+        [Category("QuickTests")]
+        public class ClickOnAdd
+        {
+            IWebDriver Driver { get; set; }
+            HomePage NHomePage { get; set; }
+
+            [OneTimeSetUp]
+            public void SetUpF()
+            {
+                Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.Chrome);
+                NHomePage = new HomePage(Driver);
+            }
+
+            [Test]
+            public void ClickOnFirstAdd()
+            {
+
+                try
+                {
+                    NHomePage.BannerAdsFirst.Click();
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine("Banner Nenalezen");
+                    Assert.Warn("Banner Nenalezen");
+                }
+
+                System.Threading.Thread.Sleep(2000);
+
+            }
+
+            [OneTimeTearDown]
+            public void Clean()
+            {
+                Driver.Quit();
+            }
+        }
 
 
-
-    }
+        }
 }
 
    
