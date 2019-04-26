@@ -9,9 +9,9 @@ namespace AutotestPage_RadostPodle
     public class OnasPage
     {
         
-        public OnasPage()
+        public OnasPage(IWebDriver driver)
         {
-            PageFactory.InitElements(Driver.driver, this);
+            PageFactory.InitElements(driver, this);
         }
 
         [FindsBy(How = How.CssSelector, Using = "#post-61 > div.post-entry > p:nth-child(2) > strong:nth-child(1)")]

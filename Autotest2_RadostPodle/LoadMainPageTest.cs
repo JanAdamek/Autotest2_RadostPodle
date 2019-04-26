@@ -8,27 +8,37 @@ namespace AutotestPage_RadostPodle
 
 
     [TestFixture, Order(1)]
+    [Parallelizable]
     public class LoadMainPageTest
     {
 
+        public IWebDriver Driver { get; set; }
+        public HomePage NHomePage { get ; set ; }
+        public OnasPage NOnasPage { get ; set ; }
 
-        HomePage nHomePage = new HomePage();
-        OnasPage nOnasPage = new OnasPage();
+        
+        
 
-
+        [OneTimeSetUp]
+        public void Initial()
+        {
+            Driver = Actions.OpenPage(TestConfig.urlHomePage);
+            NHomePage = new HomePage(Driver);
+            NOnasPage = new OnasPage(Driver);
+        }
 
         [Test]
         public void LinkToOMnePage()
         {
             
-            Actions.OpenPage(TestConfig.urlHomePage);
+
             System.Threading.Thread.Sleep(1000);
-            nHomePage.HlavaKarolina.Click();
+            NHomePage.HlavaKarolina.Click();
             System.Threading.Thread.Sleep(1000);
             
             try
             {
-                Assert.AreEqual(nOnasPage.OmneText.Text, TestConfig.oNasTitleText);
+                Assert.AreEqual(NOnasPage.OmneText.Text, TestConfig.oNasTitleText);
             }
             catch (Exception e)
             {
@@ -37,25 +47,34 @@ namespace AutotestPage_RadostPodle
             }
 
         }
+
+        [OneTimeTearDown]
+        public void CleanEnd()
+        {
+            Driver.Quit();
+        }
     }
 
 
     [TestFixture, Order(2)]
+    [Parallelizable]
     [Category("QuickTests")]
     public class CheckSearchBar
     {
+        public IWebDriver Driver { get; set; }
+        public HomePage NHomePage { get; set; }
+        public SearchPage NSeachPage { get; set; }
 
 
-        HomePage nHomePage = new HomePage();
-        OnasPage nOnasPage = new OnasPage();
-        SearchPage nSeachPage = new SearchPage();
 
-        [SetUp]
-        public void SetUpLoad2()
+        [OneTimeSetUp]
+        public void Initial()
         {
+            Driver = Actions.OpenPage(TestConfig.urlHomePage);
 
-
-
+            NHomePage = new HomePage(Driver);
+            
+            NSeachPage = new SearchPage(Driver);
 
         }
 
@@ -63,18 +82,14 @@ namespace AutotestPage_RadostPodle
         [Test]
         public void SearchInSearchBar()
         {
+            NHomePage.SearchBar.SendKeys(TestConfig.searchText);
+            NHomePage.SearchBar.SendKeys(Keys.Enter);
 
-           
-            Actions.OpenPage(TestConfig.urlHomePage);
-
-            nHomePage.SearchBar.SendKeys(TestConfig.searchText);
-            nHomePage.SearchBar.SendKeys(Keys.Enter);
-
-            string result = nSeachPage.FirstResultHeadLine.Text;
+            string result = NSeachPage.FirstResultHeadLine.Text;
 
             try
             {
-                Assert.AreEqual(nSeachPage.FirstResultHeadLine.Text, TestConfig.searchResultTitle);
+                Assert.AreEqual(NSeachPage.FirstResultHeadLine.Text, TestConfig.searchResultTitle);
             }
             catch (Exception e)
             {
@@ -85,21 +100,33 @@ namespace AutotestPage_RadostPodle
 
         }
 
+        [OneTimeTearDown]
+        public void CleanEnd()
+        {
+            Driver.Quit();
+        }
+
 
 
     }
 
     [TestFixture, Order(3)]
+    [Parallelizable]
     [Category("QuickTests")]
     public class CheckMainMenu
     {
+        public IWebDriver Driver { get; set; }
+        public HomePage NHomePage { get; set; }
 
-        HomePage nHomePage = new HomePage();
 
-        [SetUp]
+
+
+
+        [OneTimeSetUp]
         public void SetUpLoad3()
         {
-
+            Driver = Actions.OpenPage(TestConfig.urlHomePage);
+            NHomePage = new HomePage(Driver);
         }
 
 
@@ -107,22 +134,22 @@ namespace AutotestPage_RadostPodle
         public void CheckAllMenusTexts()
         {
             
-            Actions.OpenPage(TestConfig.urlHomePage);
+            
             System.Threading.Thread.Sleep(1000);
 
             try
             {
                 Assert.Multiple(() =>
                {
-                   Assert.AreEqual(nHomePage.MenuHome.Text, TestConfig.menuHomeText);
-                   Assert.AreEqual(nHomePage.MenuZapisky.Text, TestConfig.menuZapiskyText);
-                   Assert.AreEqual(nHomePage.MenuRecepty.Text, TestConfig.menuReceptyText);
-                   Assert.AreEqual(nHomePage.MenuRadosti.Text, TestConfig.menuRadostiText);
-                   Assert.AreEqual(nHomePage.MenuOMne.Text, TestConfig.menuOmneText);
-                   Assert.AreEqual(nHomePage.MenuMuzika.Text, TestConfig.menuMuzikaText);
-                   Assert.AreEqual(nHomePage.MenuSpoluprace.Text, TestConfig.menuSpolupraceText);
-                   Assert.AreEqual(nHomePage.MenuMedia.Text, TestConfig.menuMediaText);
-                   Assert.AreEqual(nHomePage.MenuAkce.Text, TestConfig.menuAkceText);
+                   Assert.AreEqual(NHomePage.MenuHome.Text, TestConfig.menuHomeText);
+                   Assert.AreEqual(NHomePage.MenuZapisky.Text, TestConfig.menuZapiskyText);
+                   Assert.AreEqual(NHomePage.MenuRecepty.Text, TestConfig.menuReceptyText);
+                   Assert.AreEqual(NHomePage.MenuRadosti.Text, TestConfig.menuRadostiText);
+                   Assert.AreEqual(NHomePage.MenuOMne.Text, TestConfig.menuOmneText);
+                   Assert.AreEqual(NHomePage.MenuMuzika.Text, TestConfig.menuMuzikaText);
+                   Assert.AreEqual(NHomePage.MenuSpoluprace.Text, TestConfig.menuSpolupraceText);
+                   Assert.AreEqual(NHomePage.MenuMedia.Text, TestConfig.menuMediaText);
+                   Assert.AreEqual(NHomePage.MenuAkce.Text, TestConfig.menuAkceText);
                });
 
             }
@@ -131,12 +158,12 @@ namespace AutotestPage_RadostPodle
                 Console.WriteLine(e);
             }
 
-            nHomePage.MenuHome.Click();
+            NHomePage.MenuHome.Click();
             System.Threading.Thread.Sleep(1000);
 
             try
             {
-                Assert.AreEqual(Driver.driver.Url, TestConfig.urlHomePage);
+                Assert.AreEqual(Driver.Url, TestConfig.urlHomePage);
             }
             catch (Exception e)
             {
@@ -144,6 +171,12 @@ namespace AutotestPage_RadostPodle
                 Console.WriteLine(e);
             }
 
+        }
+
+        [OneTimeTearDown]
+        public void CleanEnd()
+        {
+            Driver.Quit();
         }
 
 

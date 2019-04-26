@@ -9,9 +9,9 @@ namespace AutotestPage_RadostPodle
     public class SearchPage
     {
         
-        public SearchPage()
+        public SearchPage(IWebDriver driver)
         {
-            PageFactory.InitElements(Driver.driver, this);
+            PageFactory.InitElements(driver, this);
         }
 
         [FindsBy(How = How.CssSelector, Using = "article > div.post-header > h2 > a")]
