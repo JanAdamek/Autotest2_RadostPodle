@@ -2,13 +2,14 @@
 namespace AutotestPage_RadostPodle
 {
     using OpenQA.Selenium;
-    using NUnit.Framework;
+
     using System;
     using OpenQA.Selenium.Chrome;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
-    [TestFixture, Order(1)]
-    [Parallelizable]
+    [TestClass]
+
     public class LoadMainPageTest
     {
 
@@ -19,18 +20,15 @@ namespace AutotestPage_RadostPodle
         
         
 
-        [OneTimeSetUp]
-        public void Initial()
+
+        [TestMethod]
+        
+        public void LinkToOMnePage()
         {
+
             Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.Chrome);
             NHomePage = new HomePage(Driver);
             NOnasPage = new OnasPage(Driver);
-        }
-
-        [Test]
-        public void LinkToOMnePage()
-        {
-            
 
             System.Threading.Thread.Sleep(1000);
             NHomePage.HlavaKarolina.Click();
@@ -46,19 +44,15 @@ namespace AutotestPage_RadostPodle
                 Console.WriteLine(e);
             }
 
+            Driver.Quit();
+
         }
 
-        [OneTimeTearDown]
-        public void CleanEnd()
-        {
-            Driver.Quit();
-        }
+        
     }
 
 
-    [TestFixture, Order(2)]
-    [Parallelizable]
-    [Category("QuickTests")]
+    [TestClass]
     public class CheckSearchBar
     {
         public IWebDriver Driver { get; set; }
@@ -67,21 +61,17 @@ namespace AutotestPage_RadostPodle
 
 
 
-        [OneTimeSetUp]
-        public void Initial()
-        {
-            Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.IE);
-
-            NHomePage = new HomePage(Driver);
-            
-            NSeachPage = new SearchPage(Driver);
-
-        }
 
 
-        [Test]
+        [TestMethod]
         public void SearchInSearchBar()
         {
+            Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.Chrome);
+
+            NHomePage = new HomePage(Driver);
+
+            NSeachPage = new SearchPage(Driver);
+
             NHomePage.SearchBar.SendKeys(TestConfig.searchText);
             NHomePage.SearchBar.SendKeys(Keys.Enter);
 
@@ -98,21 +88,17 @@ namespace AutotestPage_RadostPodle
 
             }
 
+            Driver.Quit();
+
         }
 
-        [OneTimeTearDown]
-        public void CleanEnd()
-        {
-            Driver.Quit();
-        }
+       
 
 
 
     }
 
-    [TestFixture, Order(3)]
-    [Parallelizable]
-    [Category("QuickTests")]
+    [TestClass]
     public class CheckMainMenu
     {
         public IWebDriver Driver { get; set; }
@@ -122,25 +108,18 @@ namespace AutotestPage_RadostPodle
 
 
 
-        [OneTimeSetUp]
-        public void SetUpLoad3()
+        
+        [TestMethod]
+        public void CheckAllMenusTexts()
         {
             Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.Firefox);
             NHomePage = new HomePage(Driver);
-        }
 
-
-        [Test]
-        public void CheckAllMenusTexts()
-        {
-            
-            
             System.Threading.Thread.Sleep(1000);
 
             try
             {
-                Assert.Multiple(() =>
-               {
+                
                    Assert.AreEqual(NHomePage.MenuHome.Text, TestConfig.menuHomeText);
                    Assert.AreEqual(NHomePage.MenuZapisky.Text, TestConfig.menuZapiskyText);
                    Assert.AreEqual(NHomePage.MenuRecepty.Text, TestConfig.menuReceptyText);
@@ -150,7 +129,7 @@ namespace AutotestPage_RadostPodle
                    Assert.AreEqual(NHomePage.MenuSpoluprace.Text, TestConfig.menuSpolupraceText);
                    Assert.AreEqual(NHomePage.MenuMedia.Text, TestConfig.menuMediaText);
                    Assert.AreEqual(NHomePage.MenuAkce.Text, TestConfig.menuAkceText);
-               });
+               
 
             }
             catch (Exception e)
@@ -171,53 +150,44 @@ namespace AutotestPage_RadostPodle
                 Console.WriteLine(e);
             }
 
-        }
-
-        [OneTimeTearDown]
-        public void CleanEnd()
-        {
             Driver.Quit();
         }
 
-        [TestFixture, Order(4)]
-        [Parallelizable]
-        [Category("QuickTests")]
+
+        [TestClass]
         public class ClickOnAdd
         {
             IWebDriver Driver { get; set; }
             HomePage NHomePage { get; set; }
 
-            [OneTimeSetUp]
-            public void SetUpF()
-            {
-                Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.Chrome);
-                NHomePage = new HomePage(Driver);
-            }
 
-            [Test]
+            [TestMethod]
             public void ClickOnFirstAdd()
             {
+                Driver = Actions.OpenPage(TestConfig.urlHomePage, BrowserType.Firefox);
 
-                try
-                {
-                    NHomePage.BannerAdsFirst.Click();
-                }
+                System.Threading.Thread.Sleep(10000);
+
+                NHomePage = new HomePage(Driver);
+
+                
+                    Console.WriteLine("Link :{0}", NHomePage.LinkAdsFirst.Displayed );
+                    Console.WriteLine("Product :{0}", NHomePage.ProductAdsFirst.Displayed  );
+                    Console.WriteLine("Banner :{0}:", NHomePage.BannerAdsFirst.Displayed);
+                /*
+            }
                 catch (Exception e)
                 {
 
-                    Console.WriteLine("Banner Nenalezen");
-                    Assert.Warn("Banner Nenalezen");
+                    Console.WriteLine("Banner Nenalezen: {0}", e);
+                    Assert.Warn("Banner Nenalezen: {0}", e);
                 }
-
+                */
                 System.Threading.Thread.Sleep(2000);
-
-            }
-
-            [OneTimeTearDown]
-            public void Clean()
-            {
                 Driver.Quit();
             }
+
+            
         }
 
 
